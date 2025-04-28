@@ -1,12 +1,13 @@
-const express = require('express');
-const { getTasks, createTask, deleteTask, toggleTask, editTask } = require('../controllers/taskController');
-const { protect } = require('../middleware/authMiddleware');
+const express = require("express");
 const router = express.Router();
+const { getTasks, getTask, postTask, putTask, deleteTask } = require("../controllers/taskControllers");
+const { verifyAccessToken } = require("../middlewares.js");
 
-router.get('/', protect, getTasks);
-router.post('/', protect, createTask);
-router.delete('/:id', protect, deleteTask);
-router.put('/toggle/:id', protect, toggleTask);
-router.put('/edit/:id', protect, editTask);
+// Routes beginning with /api/tasks
+router.get("/", verifyAccessToken, getTasks);
+router.get("/:taskId", verifyAccessToken, getTask);
+router.post("/", verifyAccessToken, postTask);
+router.put("/:taskId", verifyAccessToken, putTask);
+router.delete("/:taskId", verifyAccessToken, deleteTask);
 
 module.exports = router;
